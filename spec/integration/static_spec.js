@@ -5,7 +5,7 @@ const base = "http://localhost:3000/";
 describe("routes : static", () => {
 
 //#1
-  describe("GET /", () => {
+  describe("GET /marco", () => {
 
 //#2
     it("should return status code 200", (done) => {
