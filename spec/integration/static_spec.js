@@ -12,6 +12,7 @@ describe("GET /", () => {
         request.get(base, (err, res, body) => {
           expect(res.statusCode).toBe(200);
           expect(body).toContain("Welcome to Bloccit");
+          done();
    });
   });
 });
