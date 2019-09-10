@@ -9,7 +9,10 @@ module.exports = {
                       res.render("topics/index", {topics});
                     }
                   })
-   },
+                },
+    new(req, res, next){
+        res.render("topics/new");
+                },
    new(req, res, next){/* action implementation */},
    create(req, res, next){
      let newTopic = {
