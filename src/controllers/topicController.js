@@ -36,12 +36,17 @@ module.exports = {
           }
         });
       },
+      edit(req, res, next){
+        topicQueries.getTopic(req.params.id, (err, topic) => {
+          if(err || topic == null){
+            res.redirect(404, "/");
+          } else {
+            res.render("topics/edit", {topic});
+          }
+        });
+      },
     show(req, res, next){
-
-        //#1
              topicQueries.getTopic(req.params.id, (err, topic) => {
-        
-        //#2
                if(err || topic == null){
                  res.redirect(404, "/");
                } else {

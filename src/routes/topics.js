@@ -5,6 +5,8 @@ const topicController = require("../controllers/topicController")
 
 router.get("/topics", topicController.index);
 
+router.get("/topics/:id/edit", topicController.edit);
+
 router.post("/topics/create", topicController.create);
 
 router.get("/topics/new", topicController.new);

@@ -11,7 +11,7 @@ describe("routes : topics", () => {
         sequelize.sync({force: true}).then((res) => {
   
          Topic.create({
-           title: "JS Frameworks",
+           title: "JavaScript Frameworks",
            description: "There is a lot of them"
          })
           .then((topic) => {
@@ -35,7 +35,7 @@ describe("GET /topics", () => {
                  expect(res.statusCode).toBe(200);
                  expect(err).toBeNull();
                  expect(body).toContain("Topics");
-                 expect(body).toContain("JS Frameworks");
+                 expect(body).toContain("JavaScript Frameworks");
                  done();
                });
              });
@@ -51,30 +51,23 @@ describe("GET /topics/new", () => {
             });
         });
 describe("GET /topics/:id", () => {
-
             it("should render a view with the selected topic", (done) => {
               request.get(`${base}${this.topic.id}`, (err, res, body) => {
                 expect(err).toBeNull();
-                expect(body).toContain("JS Frameworks");
+                expect(body).toContain("JavaScript Frameworks");
                 done();
               });
-            });
-       
-          });      
-describe("POST /topics/:id/destroy", () => {
+            }); 
+          });    
 
-            it("should delete the topic with the associated ID", (done) => {
-       
-        //#1
+describe("POST /topics/:id/destroy", () => {
+            it("should delete the topic with the associated ID", (done) => {     
               Topic.findAll()
               .then((topics) => {
-       
-        //#2
                 const topicCountBeforeDelete = topics.length;
        
                 expect(topicCountBeforeDelete).toBe(1);
        
-        //#3
                 request.post(`${base}${this.topic.id}/destroy`, (err, res, body) => {
                   Topic.findAll()
                   .then((topics) => {
@@ -82,10 +75,19 @@ describe("POST /topics/:id/destroy", () => {
                     expect(topics.length).toBe(topicCountBeforeDelete - 1);
                     done();
                   })
-       
                 });
+              }); 
+            });     
+          });
+   describe("GET /topics/:id/edit", () => {
+
+            it("should render a view with an edit topic form", (done) => {
+              request.get(`${base}${this.topic.id}/edit`, (err, res, body) => {
+                expect(err).toBeNull();
+                expect(body).toContain("Edit Topic");
+                expect(body).toContain("JavaScript Frameworks");
+                done();
               });
-       
             });
        
           });
@@ -99,9 +101,7 @@ describe("POST /topics/:id/destroy", () => {
             };
       
     it("should create a new topic and redirect", (done) => {
-    
               request.post(options,
-      
                 (err, res, body) => {
                   Topic.findOne({where: {title: "blink-182 songs"}})
                   .then((topic) => {
@@ -117,5 +117,32 @@ describe("POST /topics/:id/destroy", () => {
                 }
               );
             });
+          });
+          describe("POST /topics/:id/update", () => {
+
+            it("should update the topic with the given values", (done) => {
+               const options = {
+                  url: `${base}${this.topic.id}/update`,
+                  form: {
+                    title: "JavaScript Frameworks",
+                    description: "There are a lot of them"
+                  }
+                };
+       //#1
+                request.post(options,
+                  (err, res, body) => {
+       
+                  expect(err).toBeNull();
+       //#2
+                  Topic.findOne({
+                    where: { id: this.topic.id }
+                  })
+                  .then((topic) => {
+                    expect(topic.title).toBe("JavaScript Frameworks");
+                    done();
+                  });
+                });
+            });
+       
           });
      });
