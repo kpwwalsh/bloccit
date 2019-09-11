@@ -27,7 +27,7 @@ describe("routes : topics", () => {
   
       });
 
-  describe("GET /topics", () => {
+describe("GET /topics", () => {
 
     it("should return a status code 200 and all topics", (done) => {
 
@@ -40,7 +40,7 @@ describe("routes : topics", () => {
                });
              });
            });
-  describe("GET /topics/new", () => {
+describe("GET /topics/new", () => {
 
     it("should render a new topic form", (done) => {
               request.get(`${base}new`, (err, res, body) => {
@@ -50,6 +50,45 @@ describe("routes : topics", () => {
               });
             });
         });
+describe("GET /topics/:id", () => {
+
+            it("should render a view with the selected topic", (done) => {
+              request.get(`${base}${this.topic.id}`, (err, res, body) => {
+                expect(err).toBeNull();
+                expect(body).toContain("JS Frameworks");
+                done();
+              });
+            });
+       
+          });      
+describe("POST /topics/:id/destroy", () => {
+
+            it("should delete the topic with the associated ID", (done) => {
+       
+        //#1
+              Topic.findAll()
+              .then((topics) => {
+       
+        //#2
+                const topicCountBeforeDelete = topics.length;
+       
+                expect(topicCountBeforeDelete).toBe(1);
+       
+        //#3
+                request.post(`${base}${this.topic.id}/destroy`, (err, res, body) => {
+                  Topic.findAll()
+                  .then((topics) => {
+                    expect(err).toBeNull();
+                    expect(topics.length).toBe(topicCountBeforeDelete - 1);
+                    done();
+                  })
+       
+                });
+              });
+       
+            });
+       
+          });
  describe("POST /topics/create", () => {
             const options = {
               url: `${base}create`,
