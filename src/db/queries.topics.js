@@ -1,5 +1,5 @@
 const Topic = require("./models").Topic;
-
+const Post = require("./models").Post;
 module.exports = {
 
 //#1
@@ -13,7 +13,12 @@ module.exports = {
     })
   },
   getTopic(id, callback){
-    return Topic.findById(id)
+    return Topic.findById(id, {
+              include: [{
+                model: Post,
+                as: "posts"
+              }]
+            })
     .then((topic) => {
       callback(null, topic);
     })
@@ -45,7 +50,7 @@ module.exports = {
     })
   },
   updateTopic(id, updatedTopic, callback){
-    return Topic.findByPk(id)
+    return Topic.findById(id)
     .then((topic) => {
       if(!topic){
         return callback("Topic not found");
