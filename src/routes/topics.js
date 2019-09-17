@@ -17,6 +17,5 @@ router.get("/topics/:id", topicController.show);
 
 router.post("/topics/:id/destroy", topicController.destroy);
 
-router.post("/topics/:topicId/posts/:id/destroy", postController.destroy);
 
 module.exports = router;
