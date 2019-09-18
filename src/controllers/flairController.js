@@ -10,8 +10,8 @@ module.exports = {
           name: req.body.name,
           color: req.body.color,
           topicId: req.params.topicId
-        }
-    flairQueries.addflair(newFlair, (err, flair) => {
+        };
+    flairQueries.addFlair(newFlair, (err, flair) => {
           if(err){
             res.redirect(500, "/flair/new");
           } else {
