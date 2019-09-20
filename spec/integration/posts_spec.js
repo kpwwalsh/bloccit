@@ -23,7 +23,7 @@ describe("routes : posts", () => {
         this.topic = topic;
 
         Post.create({
-          title: "Snowbll Fighting",
+          title: "Snowball Fighting",
           body: "So much snow!",
           topicId: this.topic.id
         })
