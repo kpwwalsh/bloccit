@@ -100,7 +100,7 @@ const User = require("../../src/db/models").User;
           });
      describe("GET /topics/:id/edit", () => {
 
-            it("should render a view with an edit topic form", (done) => {
+            it("should not render a view with an edit topic form", (done) => {
               request.get(`${base}${this.topic.id}/edit`, (err, res, body) => {
                 expect(err).toBeNull();
                 expect(body).toContain("Edit Topic");
@@ -139,7 +139,7 @@ const User = require("../../src/db/models").User;
           });
       describe("POST /topics/:id/update", () => {
 
-            it("should update the topic with the given values", (done) => {
+            it("should not update the topic with the given values", (done) => {
                const options = {
                   url: `${base}${this.topic.id}/update`,
                   form: {
