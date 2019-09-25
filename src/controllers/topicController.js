@@ -45,15 +45,17 @@ module.exports = {
           res.redirect("/topics");
         }
       },
-    destroy(req, res, next){
-        topicQueries.deleteTopic(req.params.id, (err, topic) => {
-          if(err){
-            res.redirect(500, `/topics/${topic.id}`)
-          } else {
-            res.redirect(303, "/topics")
-          }
-        });
-      },
+      destroy(req, res, next){
+
+        // #1
+            topicQueries.deleteTopic(req, (err, topic) => {
+              if(err){
+                res.redirect(err, `/topics/${req.params.id}`)
+              } else {
+                res.redirect(303, "/topics")
+              }
+            });
+          },
    edit(req, res, next){
 
             topicQueries.getTopic(req.params.id, (err, topic) => {

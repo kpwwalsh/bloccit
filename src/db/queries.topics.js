@@ -1,5 +1,6 @@
 const Topic = require("./models").Topic;
 const Post = require("./models").Post;
+const Authorizer = require("../policies/topic");
 module.exports = {
 
 //#1
@@ -38,7 +39,7 @@ deleteTopic(req, callback){
           } else {
    
             req.flash("notice", "You are not authorized to do that.")
-            callback(401);
+            callback(err);
           }
         })
         .catch((err) => {
