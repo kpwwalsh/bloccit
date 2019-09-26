@@ -7,6 +7,7 @@ module.exports = {
     create(req, res, next){
         let newPost= {
           title: req.body.title,
+          body: req.body.body,
           topicId: req.params.topicId,
           userId: req.user.id
         }
