@@ -155,7 +155,6 @@ describe("routes : comments", () => {
             }
           );
         });
-   
    // #2
         describe("POST /topics/:topicId/posts/:postId/comments/create", () => {
    
@@ -182,11 +181,9 @@ describe("routes : comments", () => {
               }
             );
           });
-        });
-   
+        }); 
    // #3
         describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
-   
           it("should delete the comment with the associated ID", (done) => {
             Comment.findAll()
             .then((comments) => {
@@ -207,14 +204,104 @@ describe("routes : comments", () => {
                 .catch((err) => {
                     console.log(err, body);
                     done();
-                  });
-              });
             })
    
           });
    
         });
-   
+         
       }); //end context for signed in user
-    });
+     describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+        beforeEach((done) => {
+            User.create({
+                email: "whoiswho@test.com",
+                password: "BaffleDog",
+                role: "member"
+              }).then(user=>{
+                request.get({
+                url: "http://localhost:3000/auth/fake",
+                form: {
+                     role: user.role,
+                     email:user.email,
+                     userId: user.id
+             }
+           },
+            (err, res, body) => {
+              done();
+            }
+          );
+        });
+     });
    
+     it("should not delete another users comment"), (done)=>{
+        Comment.findAll()
+        .then((comments) => {
+          const commentCountBeforeDelete = comments.length;
+          expect(commentCountBeforeDelete).toBe(1);
+          request.post(
+            `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+            (err, res, body) => {
+              expect(res.statusCode).toBe(401);
+            Comment.findAll()
+            .then((comments) => {
+              expect(err).toBeNull();
+              expect(comments.length).toBe(commentCountBeforeDelete);
+              done();
+            })
+            .catch((err) => {
+               console.log(err, body);
+               done();
+             });
+          });
+        })
+      };
+    });
+  });
+  describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+    beforeEach((done) => {
+        User.create({
+            email: "admin@test.com",
+            password: "BaggleCat",
+            role: "admin"
+          }).then(user=>{
+            request.get({
+            url: "http://localhost:3000/auth/fake",
+            form: {
+                 role: user.role,
+                 email:user.email,
+                 userId: user.id
+         }
+       },
+        (err, res, body) => {
+          done();
+        }
+      );
+    });
+ });
+ it("should delete another users comment", (done) => {
+  Comment.findAll()
+  .then((comments) => {
+    const commentCountBeforeDelete = comments.length;
+    expect(commentCountBeforeDelete).toBe(1);
+    request.post(
+     `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+      (err, res, body) => {
+      expect(res.statusCode).toBe(302);
+      Comment.findAll()
+      .then((comments) => {
+        expect(err).toBeNull();
+        expect(comments.length).toBe(commentCountBeforeDelete - 1);
+        done();
+      })
+      .catch((err) => {
+          console.log(err, body);
+          done();
+        })
+       }
+     );
+   });
+  });
+ });
+});
+});
+ 
