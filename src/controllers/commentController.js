@@ -32,7 +32,6 @@
  
  // #6
    destroy(req, res, next){
-    console.log(destory());
      commentQueries.deleteComment(req, (err, comment) => {
        if(err){
          res.redirect(err, req.headers.referer);
