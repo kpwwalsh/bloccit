@@ -131,7 +131,10 @@ describe("routes : comments", () => {
                    expect(comments.length).toBe(commentCountBeforeDelete);
                    done();
                  })
-    
+                 .catch((err) => {
+                    console.log(err, body);
+                    done();
+                  });
                });
              })
            });
@@ -173,7 +176,7 @@ describe("routes : comments", () => {
                   done();
                 })
                 .catch((err) => {
-                  console.log(err);
+                  console.log(err), body;
                   done();
                 });
               }
@@ -201,7 +204,10 @@ describe("routes : comments", () => {
                   expect(comments.length).toBe(commentCountBeforeDelete - 1);
                   done();
                 })
-   
+                .catch((err) => {
+                    console.log(err, body);
+                    done();
+                  });
               });
             })
    
