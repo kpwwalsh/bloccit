@@ -209,31 +209,25 @@ describe("routes : comments", () => {
           });
    
         });
-         
-      }); //end context for signed in user
-     describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
-        beforeEach((done) => {
-            User.create({
-                email: "whoiswho@test.com",
-                password: "BaffleDog",
-                role: "member"
-              }).then(user=>{
-                request.get({
-                url: "http://localhost:3000/auth/fake",
-                form: {
-                     role: user.role,
-                     email:user.email,
-                     userId: user.id
-             }
-           },
-            (err, res, body) => {
-              done();
-            }
-          );
-        });
-     });
    
      it("should not delete another users comment"), (done)=>{
+       User.create({
+         email:"whoiswho@who.com",
+         password: "1234567"
+       })
+       .then((user)=>{
+         expect(user.email).toBe("whoiswho@who.com");
+         expect(user.id).toBe(1);
+         request.get({
+          url: "http://localhost:3000/auth/fake",
+          form: {
+            role: "member",     // mock authenticate as member user
+            userId: this.user.id
+          }
+         }, (err, res, body) => {
+          done();
+         });
+     
         Comment.findAll()
         .then((comments) => {
           const commentCountBeforeDelete = comments.length;
@@ -246,17 +240,14 @@ describe("routes : comments", () => {
             .then((comments) => {
               expect(err).toBeNull();
               expect(comments.length).toBe(commentCountBeforeDelete);
-              done();
-            })
-            .catch((err) => {
-               console.log(err, body);
                done();
              });
           });
         })
-      };
-    });
+     });
+    };
   });
+
   describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
     beforeEach((done) => {
         User.create({
@@ -304,4 +295,4 @@ describe("routes : comments", () => {
  });
 });
 });
- 
+})
