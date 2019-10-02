@@ -48,5 +48,27 @@ module.exports = (sequelize, DataTypes) => {
             .reduce((prev, next) => { return prev + next });
         };
   };
+ 
+ 
+Post.prototype.hasUpvoteFor=function(){
+    var votes= [0];
+
+    return this.getVotes({
+      where:{
+        userId:this.userID,
+        value:1
+      }
+    })
+  };
+  Post.prototype.hasDownvoteFor=function(){
+    var votes= [0];
+
+    return this.getVotes({
+      where:{
+        userId:this.userID,
+        value:-1
+      }
+    })
+  };
   return Post;
 };
