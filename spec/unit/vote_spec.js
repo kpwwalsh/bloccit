@@ -91,21 +91,20 @@ describe("Vote", () => {
           });
         });
 
-        it("should not create a vote that is not equal to 1 or -1", (done) => { 
-                  Vote.create({
-                    value: 4,
-                    postId: this.post.id,
-                    userId: this.user.id
-                  })
-                  .then((vote) => {
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                    done();
-                  });
+        it("should not create a vote that is not equal to 1 or -1", done => {
+            Vote.create({
+                value: 4,
+                postId: this.post.id,
+                userId: this.user.id
+              })
+                .then(vote => {
+                  done();
+                })
+                .catch(err => {
+                  expect(err.message).toContain("Validation error")
+                  done();
                 });
-         
-    // #5
+            });
         it("should create a downvote on a post for a user", (done) => {
           Vote.create({
             value: -1,
@@ -304,8 +303,9 @@ describe("Vote", () => {
            })
            .then(vote => {
             this.post.votes = vote;
-            const upVote = this.post.hasUpvoteFor(vote.userId);
-            expect(upVote).toBe(true);
+            this.post.hasUpvoteFor(vote.userId, (hasUpvote) => {
+              expect(hasUpvote).toBe(true);
+            });
             done();
            })
            .catch((err) => {
@@ -324,8 +324,9 @@ describe("Vote", () => {
            })
            .then(vote => {
             this.post.votes = vote;
-            const downVote = this.post.hasDownvoteFor(vote.userId);
-            expect(downVote).toBe(true);
+            this.post.hasDownvoteFor(vote.userId, (hasDownvote) => {
+              expect(hasDownvote).toBe(true);
+            });
             done();
            })
            .catch((err) => {
