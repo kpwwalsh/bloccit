@@ -302,18 +302,17 @@ describe("Vote", () => {
              postId: this.post.id
            })
            .then(vote => {
-            this.post.votes = vote;
-            this.post.hasUpvoteFor(vote.userId, (hasUpvote) => {
-              expect(hasUpvote).toBe(true);
-            });
+            this.post.votes = [vote];
+            const hasUpvote = this.post.hasUpvoteFor(vote.userId);
+            expect(hasUpvote).toBe(true);
             done();
-           })
-           .catch((err) => {
-             console.log(err);
-             done();
-           });
-         });
+          })
+          .catch(err => {
+            console.log(err);
+            done();
+          });
       });
+    });
   
       describe("#hasDownvoteFor()", () => {
         it("should return true if user has a downvote for the post", (done) => {
@@ -323,17 +322,16 @@ describe("Vote", () => {
              postId: this.post.id
            })
            .then(vote => {
-            this.post.votes = vote;
-            this.post.hasDownvoteFor(vote.userId, (hasDownvote) => {
-              expect(hasDownvote).toBe(true);
-            });
+            this.post.votes = [vote];
+            const hasDownvote = this.post.hasDownvoteFor(vote.userId);
+            expect(hasDownvote).toBe(true);
             done();
-           })
-           .catch((err) => {
-             console.log(err);
-             done();
-           });
-         });
-       });
+          })
+          .catch(err => {
+            console.log(err);
+            done();
+          });
+      });
+      });
      });
   

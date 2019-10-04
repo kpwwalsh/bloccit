@@ -49,24 +49,28 @@ module.exports = (sequelize, DataTypes) => {
         };
   };
   
-    Post.prototype.hasUpvoteFor=function(){
-      var votes= 0;
-      return this.getVotes({
-        where:{
-        userId:this.userID,
-        value:1
+  Post.prototype.hasUpvoteFor = function(userId) {
+    const foundUpvote = this.votes.filter((vote) => {
+      if ((vote.value === 1) && (vote.userId === userId)) {
+        return true;
       }
-    })
+      else{
+        return false;
+      }
+    });
+    return foundUpvote.length === 1;    
   };
 
-    Post.prototype.hasDownvoteFor=function(){
-      var votes= 0;
-      return this.getVotes({
-        where:{
-        userId:this.userID,
-        value:-1
-      }
-    })
-  };
+  Post.prototype.hasDownvoteFor = function(userId) {
+    const foundDownvote = this.votes.filter((vote) => {
+   if((vote.value === -1) && (vote.userId === userId)){
+     return true;
+    } else{
+       return false;
+     }
+    });
+    return foundDownvote.length === 1;    
+  }
+  
   return Post;
 };
